@@ -3,7 +3,7 @@
 class SendFormViewedWebhookRequestJob < ApplicationJob
   queue_as :webhooks
 
-  USER_AGENT = 'DocuSeal.co Webhook'
+  USER_AGENT = 'gozne.io Webhook'
 
   MAX_ATTEMPTS = 10
 
@@ -17,7 +17,7 @@ class SendFormViewedWebhookRequestJob < ApplicationJob
 
     return if preferences['form.viewed'] == false
 
-    ActiveStorage::Current.url_options = Docuseal.default_url_options
+    ActiveStorage::Current.url_options = gozne.default_url_options
 
     resp = begin
       Faraday.post(url,
@@ -33,7 +33,7 @@ class SendFormViewedWebhookRequestJob < ApplicationJob
     end
 
     if (resp.nil? || resp.status.to_i >= 400) && attempt <= MAX_ATTEMPTS &&
-       (!Docuseal.multitenant? || submitter.account.account_configs.exists?(key: :plan))
+       (!gozne.multitenant? || submitter.account.account_configs.exists?(key: :plan))
       SendFormViewedWebhookRequestJob.set(wait: (2**attempt).minutes)
                                      .perform_later(submitter, {
                                                       attempt: attempt + 1,

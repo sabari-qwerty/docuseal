@@ -1,36 +1,36 @@
 # frozen_string_literal: true
 
-module Docuseal
+module gozne
   URL_CACHE = ActiveSupport::Cache::MemoryStore.new
-  PRODUCT_URL = 'https://www.docuseal.co'
+  PRODUCT_URL = 'https://www.gozne.io'
   NEWSLETTER_URL = "#{PRODUCT_URL}/newsletters".freeze
   ENQUIRIES_URL = "#{PRODUCT_URL}/enquiries".freeze
-  PRODUCT_NAME = 'DocuSeal'
+  PRODUCT_NAME = 'gozne'
   DEFAULT_APP_URL = 'http://localhost:3000'
-  GITHUB_URL = 'https://github.com/docusealco/docuseal'
+  GITHUB_URL = 'https://github.com/gozneco/gozne'
   DISCORD_URL = 'https://discord.gg/qygYCDGck9'
-  TWITTER_URL = 'https://twitter.com/docusealco'
-  TWITTER_HANDLE = '@docusealco'
-  SUPPORT_EMAIL = 'support@docuseal.co'
+  TWITTER_URL = 'https://twitter.com/gozneco'
+  TWITTER_HANDLE = '@gozneco'
+  SUPPORT_EMAIL = 'support@gozne.io'
   HOST = ENV.fetch('HOST', 'localhost')
   CONSOLE_URL = if Rails.env.development?
                   'http://console.localhost.io:3001'
                 elsif ENV['MULTITENANT'] == 'true'
                   "https://console.#{HOST}"
                 else
-                  'https://console.docuseal.co'
+                  'https://console.gozne.io'
                 end
   CLOUD_URL = if Rails.env.development?
                 'http://localhost:3000'
               else
-                'https://docuseal.co'
+                '/'
               end
   CDN_URL = if Rails.env.development?
               'http://localhost:3000'
             elsif ENV['MULTITENANT'] == 'true'
               "https://cdn.#{HOST}"
             else
-              'https://cdn.docuseal.co'
+              'https://cdn.gozne.io'
             end
 
   CERTS = JSON.parse(ENV.fetch('CERTS', '{}'))
@@ -61,7 +61,7 @@ module Docuseal
   end
 
   def default_pkcs
-    @default_pkcs ||= GenerateCertificate.load_pkcs(Docuseal::CERTS)
+    @default_pkcs ||= GenerateCertificate.load_pkcs(gozne::CERTS)
   end
 
   def trusted_certs

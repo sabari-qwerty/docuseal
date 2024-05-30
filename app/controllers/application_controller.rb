@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   check_authorization unless: :devise_controller?
 
-  before_action :sign_in_for_demo, if: -> { Docuseal.demo? }
+  before_action :sign_in_for_demo, if: -> { gozne.demo? }
   before_action :maybe_redirect_to_setup, unless: :signed_in?
   before_action :authenticate_user!, unless: :devise_controller?
 
@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    Docuseal.default_url_options
+    gozne.default_url_options
   end
 
   def impersonate_user(user)

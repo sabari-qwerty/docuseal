@@ -3,7 +3,7 @@
 class SendTemplateUpdatedWebhookRequestJob < ApplicationJob
   queue_as :webhooks
 
-  USER_AGENT = 'DocuSeal.co Webhook'
+  USER_AGENT = 'gozne.io Webhook'
 
   MAX_ATTEMPTS = 10
 
@@ -31,7 +31,7 @@ class SendTemplateUpdatedWebhookRequestJob < ApplicationJob
     end
 
     if (resp.nil? || resp.status.to_i >= 400) && attempt <= MAX_ATTEMPTS &&
-       (!Docuseal.multitenant? || template.account.account_configs.exists?(key: :plan))
+       (!gozne.multitenant? || template.account.account_configs.exists?(key: :plan))
       SendTemplateUpdatedWebhookRequestJob.set(wait: (2**attempt).minutes)
                                           .perform_later(template, {
                                                            attempt: attempt + 1,

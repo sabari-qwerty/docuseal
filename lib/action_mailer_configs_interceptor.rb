@@ -9,7 +9,7 @@ module ActionMailerConfigsInterceptor
   def delivering_email(message)
     return message unless Rails.env.production?
 
-    if Docuseal.demo?
+    if gozne.demo?
       message.delivery_method(:test)
 
       return message

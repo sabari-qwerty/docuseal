@@ -35,7 +35,7 @@ class SetupController < ApplicationController
       ]
       @account.encrypted_configs.create!(encrypted_configs)
 
-      Docuseal.refresh_default_url_options!
+      gozne.refresh_default_url_options!
 
       sign_in(@user)
 

@@ -15,7 +15,7 @@ module Submissions
 
       io = StringIO.new
 
-      pdf.trailer.info[:Creator] = "#{Docuseal.product_name} (#{Docuseal::PRODUCT_URL})"
+      pdf.trailer.info[:Creator] = "#{gozne.product_name} (#{gozne::PRODUCT_URL})"
 
       sign_params = {
         reason: sign_reason,
@@ -56,7 +56,7 @@ module Submissions
     end
 
     def sign_reason
-      'Signed with DocuSeal.co'
+      'Signed with gozne.io'
     end
   end
 end

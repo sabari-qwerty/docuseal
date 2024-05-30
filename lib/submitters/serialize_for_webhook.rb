@@ -29,13 +29,13 @@ module Submitters
                       'documents' => documents,
                       'audit_log_url' => submitter.submission.audit_log_url,
                       'submission_url' => r.submissions_preview_url(submitter.submission.slug,
-                                                                    **Docuseal.default_url_options),
+                                                                    **gozne.default_url_options),
                       'template' => submitter.template.as_json(only: %i[id name external_id created_at
                                                                         updated_at]),
                       'submission' => {
                         **submitter.submission.slice(:id, :audit_log_url, :created_at),
                         status: submitter.submission.submitters.all?(&:completed_at?) ? 'completed' : 'pending',
-                        url: r.submissions_preview_url(submitter.submission.slug, **Docuseal.default_url_options)
+                        url: r.submissions_preview_url(submitter.submission.slug, **gozne.default_url_options)
                       })
     end
 

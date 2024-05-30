@@ -10,7 +10,7 @@ module Submissions
                   'Helvetica'
                 end
 
-    SIGN_REASON = 'Signed by %<name>s with DocuSeal.co'
+    SIGN_REASON = 'Signed by %<name>s with gozne.io'
 
     RTL_REGEXP = TextUtils::RTL_REGEXP
 
@@ -113,7 +113,7 @@ module Submissions
           page[:Annots] = page[:Annots].try(:reject) do |e|
             next if e.is_a?(Integer)
 
-            e.present? && e[:A] && e[:A][:URI].to_s.starts_with?('file:///docuseal_field')
+            e.present? && e[:A] && e[:A][:URI].to_s.starts_with?('file:///gozne_field')
           end || page[:Annots]
 
           width = page.box.width
@@ -471,7 +471,7 @@ module Submissions
       reason_name = submitter.email || submitter.name || submitter.phone
 
       config =
-        if Docuseal.multitenant?
+        if gozne.multitenant?
           AccountConfig.where(account: submitter.account, key: AccountConfig::ESIGNING_PREFERENCE_KEY)
                        .first_or_initialize(value: 'single')
         else
@@ -490,7 +490,7 @@ module Submissions
     end
 
     def info_creator
-      "#{Docuseal.product_name} (#{Docuseal::PRODUCT_URL})"
+      "#{gozne.product_name} (#{gozne::PRODUCT_URL})"
     end
 
     def h

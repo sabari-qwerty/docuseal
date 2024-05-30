@@ -10,10 +10,10 @@ class VerifyPdfSignatureController < ApplicationController
       end
 
     cert_data =
-      if Docuseal.multitenant?
+      if gozne.multitenant?
         value = EncryptedConfig.find_by(account: current_account, key: EncryptedConfig::ESIGN_CERTS_KEY)&.value || {}
 
-        Docuseal::CERTS.merge(value)
+        gozne::CERTS.merge(value)
       else
         EncryptedConfig.find_by(key: EncryptedConfig::ESIGN_CERTS_KEY)&.value || {}
       end
@@ -28,7 +28,7 @@ class VerifyPdfSignatureController < ApplicationController
                      *default_pkcs.ca_certs,
                      *custom_certs.map(&:certificate),
                      *custom_certs.flat_map(&:ca_certs).compact,
-                     *Docuseal.trusted_certs]
+                     *gozne.trusted_certs]
 
     render turbo_stream: turbo_stream.replace('result', partial: 'result',
                                                         locals: { pdfs:, files: params[:files], trusted_certs: })

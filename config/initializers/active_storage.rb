@@ -16,7 +16,7 @@ ActiveSupport.on_load(:active_storage_blob) do
   def self.proxy_url(blob, expires_at: nil)
     Rails.application.routes.url_helpers.blobs_proxy_url(
       signed_uuid: blob.signed_uuid(expires_at:), filename: blob.filename,
-      **Docuseal.default_url_options
+      **gozne.default_url_options
     )
   end
 

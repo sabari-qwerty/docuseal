@@ -10,7 +10,7 @@
       <li>
         <%= link_to 'Account', settings_account_path, class: 'text-base hover:bg-base-300' %>
       </li>
-      <% unless Docuseal.multitenant? %>
+      <% unless gozne.multitenant? %>
         <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::EMAIL_SMTP_KEY, account: current_account)) && ENV['SMTP_ADDRESS'].blank? &&  true_user == current_user %>
           <li>
             <%= link_to 'Email', settings_email_index_path, class: 'text-base hover:bg-base-300' %>
@@ -48,7 +48,7 @@
         </li>
       <% end %>
       <%= render 'shared/settings_nav_extra' %>
-      <% if Docuseal.demo? || !Docuseal.multitenant? %>
+      <% if gozne.demo? || !gozne.multitenant? %>
         <% if can?(:read, AccessToken) %>
           <li>
             <%= link_to 'API', settings_api_index_path, class: 'text-base hover:bg-base-300' %>
@@ -60,28 +60,28 @@
           </li>
         <% end %>
       <% end %>
-      <% if !Docuseal.demo? && can?(:manage, EncryptedConfig) && (current_user != true_user || !current_account.linked_account_account) %>
+      <% if !gozne.demo? && can?(:manage, EncryptedConfig) && (current_user != true_user || !current_account.linked_account_account) %>
         <li>
-          <%= link_to Docuseal.multitenant? ? console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}/plans") : "#{Docuseal::CLOUD_URL}/sign_up?#{{ redir: "#{Docuseal::CONSOLE_URL}/on_premise" }.to_query}", class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
+          <%= link_to gozne.multitenant? ? console_redirect_index_path(redir: "#{gozne::CONSOLE_URL}/plans") : "#{gozne::CLOUD_URL}/sign_up?#{{ redir: "#{gozne::CONSOLE_URL}/on_premise" }.to_query}", class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
             Plans
             <span class="badge badge-warning">New</span>
           <% end %>
         </li>
       <% end %>
-      <% if !Docuseal.demo? && can?(:manage, EncryptedConfig) && (current_user != true_user || !current_account.testing?) %>
+      <% if !gozne.demo? && can?(:manage, EncryptedConfig) && (current_user != true_user || !current_account.testing?) %>
         <li>
-          <%= link_to Docuseal.multitenant? ? console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}/api") : "#{Docuseal::CONSOLE_URL}/on_premise", class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
-            <% if Docuseal.multitenant? %> API <% else %> Console <% end %>
+          <%= link_to gozne.multitenant? ? console_redirect_index_path(redir: "#{gozne::CONSOLE_URL}/api") : "#{gozne::CONSOLE_URL}/on_premise", class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
+            <% if gozne.multitenant? %> API <% else %> Console <% end %>
           <% end %>
         </li>
-        <% if Docuseal.multitenant? %>
+        <% if gozne.multitenant? %>
           <li>
-            <%= link_to console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}/embedding/form"), class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
+            <%= link_to console_redirect_index_path(redir: "#{gozne::CONSOLE_URL}/embedding/form"), class: 'text-base hover:bg-base-300', data: { prefetch: false } do %>
               Embedding
             <% end %>
           </li>
         <% end %>
-        <% if (!Docuseal.multitenant? || can?(:manage, :saml_sso)) && can?(:read, EncryptedConfig.new(key: 'saml_configs', account: current_account)) && true_user == current_user %>
+        <% if (!gozne.multitenant? || can?(:manage, :saml_sso)) && can?(:read, EncryptedConfig.new(key: 'saml_configs', account: current_account)) && true_user == current_user %>
           <li>
             <%= link_to 'SSO', settings_sso_index_path, class: 'text-base hover:bg-base-300' %>
           </li>
@@ -101,34 +101,34 @@
       <% end %>
     </ul>
   </menu-active>
-  <% if Docuseal.multitenant? || cannot?(:manage, :tenants) %>
+  <% if gozne.multitenant? || cannot?(:manage, :tenants) %>
     <div class="mx-4 border-t border-base-300 hidden md:block">
       <div class="text-sm mt-3">
         Need help? Ask a question:
       </div>
       <div class="flex mt-3 space-x-3">
         <div class="tooltip" data-tip="GitHub">
-          <a href="<%= Docuseal::GITHUB_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
+          <a href="<%= gozne::GITHUB_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
             <%= svg_icon('brand_github', class: 'w-8 h-8') %>
           </a>
         </div>
         <div class="tooltip" data-tip="Discord Community">
-          <a href="<%= Docuseal::DISCORD_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
+          <a href="<%= gozne::DISCORD_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
             <%= svg_icon('brand_discord', class: 'w-8 h-8') %>
           </a>
         </div>
         <div class="tooltip" data-tip="Twitter">
-          <a href="<%= Docuseal::TWITTER_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
+          <a href="<%= gozne::TWITTER_URL %>" target="_blank" class="btn btn-circle btn-primary btn-md">
             <%= svg_icon('brand_twitter', class: 'w-8 h-8') %>
           </a>
         </div>
       </div>
-      <a href="mailto:<%= Docuseal::SUPPORT_EMAIL %>" target="_blank" class="w-full block mt-4 underline text-center">
-        <%= Docuseal::SUPPORT_EMAIL %>
+      <a href="mailto:<%= gozne::SUPPORT_EMAIL %>" target="_blank" class="w-full block mt-4 underline text-center">
+        <%= gozne::SUPPORT_EMAIL %>
       </a>
-      <% if Docuseal.version.present? %>
-        <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="badge badge-outline text-xs block mx-auto mt-4">
-          v<%= Docuseal.version %>
+      <% if gozne.version.present? %>
+        <a href="https://github.com/gozneco/gozne/releases" target="_blank" class="badge badge-outline text-xs block mx-auto mt-4">
+          v<%= gozne.version %>
         </a>
       <% end %>
     </div>

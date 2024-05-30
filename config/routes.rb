@@ -86,7 +86,7 @@ Rails.application.routes.draw do
   resource :blobs_proxy, only: %i[show], path: '/blobs_proxy/:signed_uuid/*filename',
                          controller: 'api/active_storage_blobs_proxy'
 
-  if Docuseal.multitenant?
+  if gozne.multitenant?
     resource :blobs_proxy_legacy, only: %i[show],
                                   path: '/blobs/proxy/:signed_id/*filename',
                                   controller: 'api/active_storage_blobs_proxy_legacy',
@@ -123,7 +123,7 @@ Rails.application.routes.draw do
   end
 
   scope '/settings', as: :settings do
-    unless Docuseal.multitenant?
+    unless gozne.multitenant?
       resources :storage, only: %i[index create], controller: 'storage_settings'
       resources :email, only: %i[index create], controller: 'email_smtp_settings'
       resources :sms, only: %i[index], controller: 'sms_settings'

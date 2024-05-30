@@ -32,7 +32,7 @@ module Submitters
 
       if with_urls
         additional_attrs['embed_src'] =
-          Rails.application.routes.url_helpers.submit_form_url(slug: submitter.slug, **Docuseal.default_url_options)
+          Rails.application.routes.url_helpers.submit_form_url(slug: submitter.slug, **gozne.default_url_options)
       end
 
       include_params = {}

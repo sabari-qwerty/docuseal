@@ -1,9 +1,9 @@
 <div class="max-w-md mx-auto px-2 mt-12 mb-4">
   <div class="space-y-6 mx-auto">
     <div class="space-y-6">
-      <% if Docuseal.multitenant? %>
+      <% if gozne.multitenant? %>
         <div class="flex items-center justify-center">
-          <%= render 'start_form/docuseal_logo' %>
+          <%= render 'start_form/gozne_logo' %>
         </div>
       <% end %>
       <div class="flex items-center bg-base-200 rounded-xl p-4 mb-4">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <% if Docuseal.multitenant? || Accounts.can_send_emails?(@submission.account) %>
+    <% if gozne.multitenant? || Accounts.can_send_emails?(@submission.account) %>
       <%= form_for '', url: send_submission_email_index_path, method: :post, html: { class: 'space-y-4', onsubmit: 'event.submitter.disabled = true' } do |f| %>
         <div dir="auto" class="form-control !mt-0">
           <%= f.hidden_field :submission_slug, value: @submission.slug %>
@@ -31,11 +31,11 @@
           <%= f.button button_title(title: t('send_copy_to_email'), disabled_with: t('starting')), class: 'base-button' %>
         </div>
       <% end %>
-      <% if Docuseal.multitenant? %>
+      <% if gozne.multitenant? %>
         <div class="divider uppercase"><%= t('or') %></div>
       <% end %>
     <% end %>
-    <% if Docuseal.multitenant? %>
+    <% if gozne.multitenant? %>
       <div>
         <%= link_to 'Create free account', registration_path, class: 'white-button w-full' %>
       </div>

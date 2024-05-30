@@ -1,12 +1,12 @@
 <template>
-  <div
-    class="list-field group mb-2"
-  >
+  <div class="list-field group mb-2">
     <div
       class="border border-base-300 rounded rounded-tr-none relative group"
       :style="{ backgroundColor: backgroundColor }"
     >
-      <div class="flex items-center justify-between relative group/contenteditable-container">
+      <div
+        class="flex items-center justify-between relative group/contenteditable-container"
+      >
         <div
           class="absolute top-0 bottom-0 right-0 left-0 cursor-pointer"
           @click="scrollToFirstArea"
@@ -23,7 +23,10 @@
           />
           <Contenteditable
             ref="name"
-            :model-value="(defaultField ? (field.title || field.name) : field.name) || defaultName"
+            :model-value="
+              (defaultField ? field.title || field.name : field.name) ||
+              defaultName
+            "
             :editable="editable && !defaultField"
             :icon-inline="true"
             :icon-width="18"
@@ -32,10 +35,7 @@
             @blur="onNameBlur"
           />
         </div>
-        <div
-          v-if="isNameFocus"
-          class="flex items-center relative"
-        >
+        <div v-if="isNameFocus" class="flex items-center relative">
           <template v-if="field.type != 'phone'">
             <input
               :id="`required-checkbox-${field.uuid}`"
@@ -43,29 +43,24 @@
               type="checkbox"
               class="checkbox checkbox-xs no-animation rounded"
               @mousedown.prevent
-            >
+            />
             <label
               :for="`required-checkbox-${field.uuid}`"
               class="label text-xs"
               @click.prevent="field.required = !field.required"
               @mousedown.prevent
-            >{{ t('required') }}</label>
+              >{{ t("required") }}</label
+            >
           </template>
         </div>
-        <div
-          v-else-if="editable"
-          class="flex items-center space-x-1"
-        >
+        <div v-else-if="editable" class="flex items-center space-x-1">
           <button
             v-if="field && !field.areas?.length"
             :title="t('draw')"
             class="relative cursor-pointer text-transparent group-hover:text-base-content"
             @click="$emit('set-draw', { field })"
           >
-            <IconNewSection
-              :width="18"
-              :stroke-width="1.6"
-            />
+            <IconNewSection :width="18" :stroke-width="1.6" />
           </button>
           <button
             v-if="field.preferences?.formula"
@@ -73,10 +68,7 @@
             :title="t('formula')"
             @click="isShowFormulaModal = true"
           >
-            <IconMathFunction
-              :width="18"
-              :stroke-width="1.6"
-            />
+            <IconMathFunction :width="18" :stroke-width="1.6" />
           </button>
           <button
             v-if="field.conditions?.length"
@@ -84,15 +76,9 @@
             :title="t('condition')"
             @click="isShowConditionsModal = true"
           >
-            <IconRouteAltLeft
-              :width="18"
-              :stroke-width="1.6"
-            />
+            <IconRouteAltLeft :width="18" :stroke-width="1.6" />
           </button>
-          <PaymentSettings
-            v-if="field.type === 'payment'"
-            :field="field"
-          />
+          <PaymentSettings v-if="field.type === 'payment'" :field="field" />
           <span
             v-else
             class="dropdown dropdown-end"
@@ -104,10 +90,7 @@
               :title="t('settings')"
               class="cursor-pointer text-transparent group-hover:text-base-content"
             >
-              <IconSettings
-                :width="18"
-                :stroke-width="1.6"
-              />
+              <IconSettings :width="18" :stroke-width="1.6" />
             </label>
             <ul
               v-if="renderDropdown"
@@ -136,10 +119,7 @@
             :title="t('remove')"
             @click="$emit('remove', field)"
           >
-            <IconTrashX
-              :width="18"
-              :stroke-width="1.6"
-            />
+            <IconTrashX :width="18" :stroke-width="1.6" />
           </button>
         </div>
       </div>
@@ -155,11 +135,16 @@
           :key="option.uuid"
           class="flex space-x-1.5 items-center"
         >
-          <span class="text-sm w-3.5">
-            {{ index + 1 }}.
-          </span>
+          <span class="text-sm w-3.5"> {{ index + 1 }}. </span>
           <div
-            v-if="editable && ['radio', 'multiple'].includes(field.type) && (index > 0 || field.areas.find((a) => a.option_uuid) || !field.areas.length) && !field.areas.find((a) => a.option_uuid === option.uuid)"
+            v-if="
+              editable &&
+              ['radio', 'multiple'].includes(field.type) &&
+              (index > 0 ||
+                field.areas.find((a) => a.option_uuid) ||
+                !field.areas.length) &&
+              !field.areas.find((a) => a.option_uuid === option.uuid)
+            "
             class="items-center flex w-full"
           >
             <input
@@ -170,16 +155,13 @@
               required
               :placeholder="`${t('option')} ${index + 1}`"
               @blur="save"
-            >
+            />
             <button
               :title="t('draw')"
               tabindex="-1"
               @click.prevent="$emit('set-draw', { field, option })"
             >
-              <IconNewSection
-                :width="18"
-                :stroke-width="1.6"
-              />
+              <IconNewSection :width="18" :stroke-width="1.6" />
             </button>
           </div>
           <input
@@ -193,7 +175,7 @@
             dir="auto"
             @focus="maybeFocusOnOptionArea(option)"
             @blur="save"
-          >
+          />
           <button
             v-if="editable"
             class="text-sm w-3.5"
@@ -203,23 +185,17 @@
             &times;
           </button>
         </div>
-        <div
-          v-if="field.options && !editable"
-          class="pb-1"
-        />
+        <div v-if="field.options && !editable" class="pb-1" />
         <button
           v-else-if="field.options && editable"
           class="text-center text-sm w-full pb-1"
           @click="addOption"
         >
-          + {{ t('add_option') }}
+          + {{ t("add_option") }}
         </button>
       </div>
     </div>
-    <Teleport
-      v-if="isShowFormulaModal"
-      :to="modalContainerEl"
-    >
+    <Teleport v-if="isShowFormulaModal" :to="modalContainerEl">
       <FormulaModal
         :field="field"
         :editable="editable && !defaultField"
@@ -227,20 +203,14 @@
         @close="isShowFormulaModal = false"
       />
     </Teleport>
-    <Teleport
-      v-if="isShowConditionsModal"
-      :to="modalContainerEl"
-    >
+    <Teleport v-if="isShowConditionsModal" :to="modalContainerEl">
       <ConditionsModal
         :field="field"
         :build-default-name="buildDefaultName"
         @close="isShowConditionsModal = false"
       />
     </Teleport>
-    <Teleport
-      v-if="isShowDescriptionModal"
-      :to="modalContainerEl"
-    >
+    <Teleport v-if="isShowDescriptionModal" :to="modalContainerEl">
       <DescriptionModal
         :field="field"
         :editable="editable && !defaultField"
@@ -252,18 +222,24 @@
 </template>
 
 <script>
-import Contenteditable from './contenteditable'
-import FieldType from './field_type'
-import PaymentSettings from './payment_settings'
-import FieldSettings from './field_settings'
-import FormulaModal from './formula_modal'
-import ConditionsModal from './conditions_modal'
-import DescriptionModal from './description_modal'
-import { IconRouteAltLeft, IconMathFunction, IconNewSection, IconTrashX, IconSettings } from '@tabler/icons-vue'
-import { v4 } from 'uuid'
+import Contenteditable from "./contenteditable";
+import FieldType from "./field_type";
+import PaymentSettings from "./payment_settings";
+import FieldSettings from "./field_settings";
+import FormulaModal from "./formula_modal";
+import ConditionsModal from "./conditions_modal";
+import DescriptionModal from "./description_modal";
+import {
+  IconRouteAltLeft,
+  IconMathFunction,
+  IconNewSection,
+  IconTrashX,
+  IconSettings,
+} from "@tabler/icons-vue";
+import { v4 } from "uuid";
 
 export default {
-  name: 'TemplateField',
+  name: "TemplateField",
   components: {
     Contenteditable,
     IconSettings,
@@ -276,167 +252,186 @@ export default {
     IconRouteAltLeft,
     IconTrashX,
     IconMathFunction,
-    FieldType
+    FieldType,
   },
-  inject: ['template', 'save', 'backgroundColor', 'selectedAreaRef', 't'],
+  inject: ["template", "save", "backgroundColor", "selectedAreaRef", "t"],
   props: {
     field: {
       type: Object,
-      required: true
+      required: true,
     },
     defaultField: {
       type: Object,
       required: false,
-      default: null
+      default: null,
     },
     editable: {
       type: Boolean,
       required: false,
-      default: true
-    }
+      default: true,
+    },
   },
-  emits: ['set-draw', 'remove', 'scroll-to'],
-  data () {
+  emits: ["set-draw", "remove", "scroll-to"],
+  data() {
     return {
       isNameFocus: false,
       showPaymentModal: false,
       isShowFormulaModal: false,
       isShowConditionsModal: false,
       isShowDescriptionModal: false,
-      renderDropdown: false
-    }
+      renderDropdown: false,
+    };
   },
   computed: {
     fieldNames: FieldType.computed.fieldNames,
-    dropdownBgColor () {
-      return ['', null, 'transparent'].includes(this.backgroundColor) ? 'white' : this.backgroundColor
+    dropdownBgColor() {
+      return ["", null, "transparent"].includes(this.backgroundColor)
+        ? "white"
+        : this.backgroundColor;
     },
-    schemaAttachmentsIndexes () {
+    schemaAttachmentsIndexes() {
       return (this.template.schema || []).reduce((acc, item, index) => {
-        acc[item.attachment_uuid] = index
+        acc[item.attachment_uuid] = index;
 
-        return acc
-      }, {})
+        return acc;
+      }, {});
     },
-    sortedAreas () {
+    sortedAreas() {
       return (this.field.areas || []).sort((a, b) => {
-        return this.schemaAttachmentsIndexes[a.attachment_uuid] - this.schemaAttachmentsIndexes[b.attachment_uuid]
-      })
+        return (
+          this.schemaAttachmentsIndexes[a.attachment_uuid] -
+          this.schemaAttachmentsIndexes[b.attachment_uuid]
+        );
+      });
     },
-    modalContainerEl () {
-      return this.$el.getRootNode().querySelector('#docuseal_modal_container')
+    modalContainerEl() {
+      return this.$el.getRootNode().querySelector("#gozne_modal_container");
     },
-    defaultName () {
-      return this.buildDefaultName(this.field, this.template.fields)
+    defaultName() {
+      return this.buildDefaultName(this.field, this.template.fields);
     },
-    areas () {
-      return this.field.areas || []
-    }
+    areas() {
+      return this.field.areas || [];
+    },
   },
-  created () {
-    this.field.preferences ||= {}
+  created() {
+    this.field.preferences ||= {};
 
-    if (this.field.type === 'date') {
-      this.field.preferences.format ||=
-        (Intl.DateTimeFormat().resolvedOptions().locale.endsWith('-US') ? 'MM/DD/YYYY' : 'DD/MM/YYYY')
+    if (this.field.type === "date") {
+      this.field.preferences.format ||= Intl.DateTimeFormat()
+        .resolvedOptions()
+        .locale.endsWith("-US")
+        ? "MM/DD/YYYY"
+        : "DD/MM/YYYY";
     }
   },
   methods: {
-    buildDefaultName (field, fields) {
-      if (field.type === 'payment' && field.preferences?.price) {
-        const { price, currency } = field.preferences || {}
+    buildDefaultName(field, fields) {
+      if (field.type === "payment" && field.preferences?.price) {
+        const { price, currency } = field.preferences || {};
 
         const formattedPrice = new Intl.NumberFormat([], {
-          style: 'currency',
-          currency
-        }).format(price)
+          style: "currency",
+          currency,
+        }).format(price);
 
-        return `${this.fieldNames[field.type]} ${formattedPrice}`
+        return `${this.fieldNames[field.type]} ${formattedPrice}`;
       } else {
-        const typeIndex = fields.filter((f) => f.type === field.type).indexOf(field)
+        const typeIndex = fields
+          .filter((f) => f.type === field.type)
+          .indexOf(field);
 
-        const suffix = { multiple: this.t('select'), radio: this.t('group') }[field.type] || this.t('field')
+        const suffix =
+          { multiple: this.t("select"), radio: this.t("group") }[field.type] ||
+          this.t("field");
 
-        return `${this.fieldNames[field.type]} ${suffix} ${typeIndex + 1}`
+        return `${this.fieldNames[field.type]} ${suffix} ${typeIndex + 1}`;
       }
     },
-    onNameFocus (e) {
-      this.isNameFocus = true
+    onNameFocus(e) {
+      this.isNameFocus = true;
 
       if (!this.field.name) {
         setTimeout(() => {
-          this.$refs.name.$refs.contenteditable.innerText = ' '
-        }, 1)
+          this.$refs.name.$refs.contenteditable.innerText = " ";
+        }, 1);
       }
     },
-    maybeFocusOnOptionArea (option) {
-      const area = this.field.areas.find((a) => a.option_uuid === option.uuid)
+    maybeFocusOnOptionArea(option) {
+      const area = this.field.areas.find((a) => a.option_uuid === option.uuid);
 
       if (area) {
-        this.selectedAreaRef.value = area
+        this.selectedAreaRef.value = area;
       }
     },
-    scrollToFirstArea () {
-      return this.sortedAreas[0] && this.$emit('scroll-to', this.sortedAreas[0])
+    scrollToFirstArea() {
+      return (
+        this.sortedAreas[0] && this.$emit("scroll-to", this.sortedAreas[0])
+      );
     },
-    closeDropdown () {
-      document.activeElement.blur()
+    closeDropdown() {
+      document.activeElement.blur();
     },
-    addOption () {
-      this.field.options.push({ value: '', uuid: v4() })
+    addOption() {
+      this.field.options.push({ value: "", uuid: v4() });
 
       this.$nextTick(() => {
-        const inputs = this.$refs.options.querySelectorAll('input')
+        const inputs = this.$refs.options.querySelectorAll("input");
 
-        inputs[inputs.length - 1]?.focus()
-      })
+        inputs[inputs.length - 1]?.focus();
+      });
 
-      this.save()
+      this.save();
     },
-    removeOption (option) {
-      this.field.options.splice(this.field.options.indexOf(option), 1)
+    removeOption(option) {
+      this.field.options.splice(this.field.options.indexOf(option), 1);
 
-      const optionIndex = this.field.areas.findIndex((a) => a.option_uuid === option.uuid)
+      const optionIndex = this.field.areas.findIndex(
+        (a) => a.option_uuid === option.uuid
+      );
 
       if (optionIndex !== -1) {
-        this.field.areas.splice(this.field.areas.findIndex((a) => a.option_uuid === option.uuid), 1)
+        this.field.areas.splice(
+          this.field.areas.findIndex((a) => a.option_uuid === option.uuid),
+          1
+        );
       }
 
-      this.save()
+      this.save();
     },
-    maybeUpdateOptions () {
-      delete this.field.default_value
+    maybeUpdateOptions() {
+      delete this.field.default_value;
 
-      if (!['radio', 'multiple', 'select'].includes(this.field.type)) {
-        delete this.field.options
+      if (!["radio", "multiple", "select"].includes(this.field.type)) {
+        delete this.field.options;
       }
 
-      if (['radio', 'multiple', 'select'].includes(this.field.type)) {
-        this.field.options ||= [{ value: '', uuid: v4() }]
+      if (["radio", "multiple", "select"].includes(this.field.type)) {
+        this.field.options ||= [{ value: "", uuid: v4() }];
       }
 
       (this.field.areas || []).forEach((area) => {
-        if (this.field.type === 'cells') {
-          area.cell_w = area.w * 2 / Math.floor(area.w / area.h)
+        if (this.field.type === "cells") {
+          area.cell_w = (area.w * 2) / Math.floor(area.w / area.h);
         } else {
-          delete area.cell_w
+          delete area.cell_w;
         }
-      })
+      });
     },
-    onNameBlur (e) {
-      const text = this.$refs.name.$refs.contenteditable.innerText.trim()
+    onNameBlur(e) {
+      const text = this.$refs.name.$refs.contenteditable.innerText.trim();
 
       if (text) {
-        this.field.name = text
+        this.field.name = text;
       } else {
-        this.field.name = ''
-        this.$refs.name.$refs.contenteditable.innerText = this.defaultName
+        this.field.name = "";
+        this.$refs.name.$refs.contenteditable.innerText = this.defaultName;
       }
 
-      this.isNameFocus = false
+      this.isNameFocus = false;
 
-      this.save()
-    }
-  }
-}
+      this.save();
+    },
+  },
+};
 </script>

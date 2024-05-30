@@ -1,5 +1,5 @@
 <%= render 'shared/turbo_modal_large', title: 'Preferences', close_after_submit: false do %>
-  <% show_api = Docuseal.multitenant? || current_account.testing? || !current_account.linked_account_account %>
+  <% show_api = gozne.multitenant? || current_account.testing? || !current_account.linked_account_account %>
   <% options = [%w[General general]] %>
   <% options << ['API and Embedding', 'api'] if show_api %>
   <% if options.size > 1 %>
